@@ -33,18 +33,32 @@ public class EUBank extends Bank {
 
     @Override
     public void withdrawOfUser(User user, int amount) {
+
+        if(getLimitOfWithdrawal() < amount || amount < 0) {
+            System.out.println("Unable to withdraw that amount!");
+            return;
+        }
         user.setBalance(user.getBalance() - amount);
         this.setTotalCapital(getTotalCapital() + amount);
     }
 
     @Override
     public void fundUser(User user, int amount) {
+
+        if(getLimitOfFunding() > amount || amount < 0) {
+            System.out.println("Unable to fund that amount!");
+            return;
+        }
         user.setBalance(user.getBalance() + amount - this.getCommission(amount));
         this.setTotalCapital(getTotalCapital() - amount);
     }
 
     @Override
     public void transferMoney(User fromUser, User toUser, int amount) {
+        if (amount < 0){
+            System.out.println("Unable to transfer negative amount!");
+            return;
+        }
         fromUser.setBalance(fromUser.getBalance() - amount + this.getCommission(amount));
         toUser.setBalance(toUser.getBalance() + amount);
     }
